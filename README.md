@@ -6,9 +6,6 @@ tested on the EU model LUH-A602S-WEUR).
 This replaces the stock firmware on the built-in ESP32-SOLO-1 module and talks to
 the appliance MCU using the stock `A5` UART protocol.
 
-This is a fork of [wdm230/levoit-lv600s-esphome](https://github.com/wdm230/levoit-lv600s-esphome).
-See [Changes in this fork](#changes-in-this-fork) for what is different.
-
 ## Confirmed Hardware
 
 | Item | Value |
@@ -70,7 +67,7 @@ or copy `lv600s.yaml` from this repo:
 
 ```yaml
 external_components:
-  - source: github://IvanVojtko/levoit-lv600s-esphome@main
+  - source: github://wdm230/levoit-lv600s-esphome@main
     components: [lv600s_humidifier]
 ```
 
