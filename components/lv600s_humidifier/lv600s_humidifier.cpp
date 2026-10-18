@@ -350,7 +350,7 @@ void LV600SHumidifier::process_status_(const uint8_t *status, uint16_t len) {
     return;
   }
 
-  const bool was_power_on = this->power_on_;
+  const bool was_display_on = this->display_on_;
   const bool first_status = !this->has_status_;
   this->has_status_ = true;
   this->mcu_version_[0] = status[0];
@@ -376,8 +376,9 @@ void LV600SHumidifier::process_status_(const uint8_t *status, uint16_t len) {
 
   if (first_status)
     this->publish_timer_();
-  // Re-assert the Wi-Fi icon after boot and whenever the appliance is switched on.
-  if (first_status || (this->power_on_ && !was_power_on))
+  // The MCU blanks the Wi-Fi icon with the rest of the panel, so re-assert it after boot and whenever the panel lights
+  // up again (power on, display on, sleep mode left), like stock does after power on, display on and leaving sleep.
+  if (first_status || (this->display_on_ && !was_display_on))
     this->wifi_led_dirty_ = true;
 
   if (this->power_sensor_ != nullptr) this->power_sensor_->publish_state(this->power_on_);
@@ -629,7 +630,10 @@ LV600SHumidifier::WifiLedState LV600SHumidifier::desired_wifi_led_state_() const
 }
 
 void LV600SHumidifier::update_wifi_led_(uint32_t now) {
-  if (!this->wifi_led_enabled_ || !this->has_status_) {
+  // Stock never sends 0xA129 while the appliance is off. Go one step further and leave the LED alone whenever the panel
+  // is dark (power off, display off or sleep mode), so the icon cannot light it up; process_status_() re-asserts the
+  // current state once the display is back on.
+  if (!this->wifi_led_enabled_ || !this->has_status_ || !this->display_on_) {
     return;
   }
   if (!this->wifi_led_dirty_ && now - this->last_wifi_led_check_ms_ < WIFI_LED_CHECK_INTERVAL_MS) {

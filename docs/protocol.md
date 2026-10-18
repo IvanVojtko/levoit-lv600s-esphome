@@ -140,7 +140,7 @@ Confirmed from stock firmware:
 | Manual mode level | `0xA260` | `[warm_enable, mist_enable, level]` | Raw command exposed as diagnostic |
 | Humidity mode | `0x4114` | `[value, 00, 00, 00]` | Raw command exposed as diagnostic |
 | Sleep mode | `0x4082` | `[value, 00, 00, 00, 00, 00]` | Raw command exposed as diagnostic |
-| Wi-Fi LED | `0xA129` | `[state, on_ms LE16, off_ms LE16, 00]` | State `0` off, `1` on, `2` blink; stock uses `1,0,0,0` when connected |
+| Wi-Fi LED | `0xA129` | `[state, on_ms LE16, off_ms LE16, 00]` | State `0` off, `1` on, `2` blink; stock uses `1,0,0,0` when connected. Stock never sends it while the appliance is off and re-sends `1,0,0,0` after display on and after leaving sleep mode |
 | Timer query | `0xA265` | empty | ACKed with an empty payload on MCU 56.0.1; not useful |
 | Production progress | `0xD004` | | Factory only |
 | Production result | `0xD005` | | Factory only |

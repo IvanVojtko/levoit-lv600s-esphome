@@ -49,6 +49,8 @@ Device behaviour:
 
 - **Wi-Fi icon on the panel** is driven like stock: on while Home Assistant is
   connected, slow blink while it is not, fast blink while the setup hotspot is up.
+  It is left alone while the panel is dark (power off, display off, sleep mode)
+  and re-sent when the display comes back on.
 - **Long press → setup hotspot.** The panel long press that the stock firmware uses
   for Wi-Fi pairing (MCU button action 3) opens the `LV600S Setup` hotspot with
   the captive portal, while the device stays connected to your Wi-Fi. Use it to
